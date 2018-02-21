@@ -2,21 +2,37 @@
 
 > Get a promise that resolves when we can read(size) next chunk of stream.
 
-## Purpose
-- What problem does this module solve? At least a few sentences.
-PLEASE_FILL_IN_HERE
-
 ## Usage
 
 ```js
 // Several examples of usage.
 // Usually copying and pasting code from the tests and making the code standalone suffices.
-// PLEASE_FILL_IN_HERE
+const nextChunk = require('stream-chunk-promise');
+const stream = someReadableStream();
+const size = 10;
+const assert = require('assert');
+nextChunk(stream, size).then((result) => {
+  assert(result.length === size);
+});
 ```
 
 ## API
 
-PLEASE_FILL_IN_HERE
+<a name="module_stream-chunk-promise"></a>
+
+## stream-chunk-promise
+<a name="exp_module_stream-chunk-promise--module.exports"></a>
+
+### module.exports(stream, size) ⏏
+read()s the next chunk of stream and resolve to it, requiring size bytes.
+
+**Kind**: Exported function
+**Resolves**: <code>Buffer\|string</code> the chunk requested
+
+| Param | Type |
+| --- | --- |
+| stream | <code>ReadableStream</code> |
+| size | <code>integer</code> |
 
 Note: To regenerate this section from the jsdoc run `npm run docs` and paste
 the output above.
