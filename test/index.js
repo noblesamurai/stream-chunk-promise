@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 const StreamGenerator = require('stream-generator');
+const StreamTest = require('streamtest');
 
 function * simplisticByteGenerator () {
   // spits out bytes, which correspond to ascii chars:
@@ -14,11 +15,11 @@ function * simplisticByteGenerator () {
   yield 108;
 }
 
-const byteStream = StreamGenerator(simplisticByteGenerator);
 const streamChunk = require('..');
 
 describe('stream-chunk-promise', function () {
   it('resolves a promise when there is enough data, flushes at end', function () {
+    const byteStream = StreamGenerator(simplisticByteGenerator);
     return streamChunk(byteStream, 2).then((result) => {
       expect(result.toString()).to.equal('Ma');
       return streamChunk(byteStream, 3);
@@ -27,6 +28,16 @@ describe('stream-chunk-promise', function () {
       return streamChunk(byteStream, 100);
     }).then((result) => {
       expect(result.toString()).to.equal('all');
+    });
+  });
+
+  it('rejects a promise when there is an error on the stream', function () {
+    const errorStream = StreamTest['v2'].fromErroredChunks(new Error('boom'), [], 0);
+    let errored = false;
+    return streamChunk(errorStream, 2).catch((err) => {
+      errored = err;
+    }).then((result) => {
+      expect(errored).to.be.an('Error');
     });
   });
 });

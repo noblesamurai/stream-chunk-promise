@@ -9,9 +9,17 @@
  * @resolves {Buffer|string} the chunk requested
  */
 module.exports = function nextChunk (stream, size) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    function onError (err) {
+      return reject(err);
+    }
+
+    stream.once('error', onError);
     const data = stream.read(size);
     if (data) return resolve(data);
-    return setImmediate(() => resolve(nextChunk(stream, size)));
+    return setImmediate(() => {
+      stream.removeListener('error', onError);
+      resolve(nextChunk(stream, size));
+    });
   });
 };
