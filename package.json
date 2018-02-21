@@ -32,7 +32,8 @@
     "mocha": "~3.3.0",
     "nyc": "^10.1.2",
     "semistandard": "*",
-    "stream-generator": "^0.1.13"
+    "stream-generator": "^0.1.13",
+    "streamtest": "^1.2.3"
   },
   "keywords": [],
   "nyc": {
