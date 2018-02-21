@@ -31,6 +31,16 @@ describe('stream-chunk-promise', function () {
     });
   });
 
+  it('does not leave listeners on the stream', function () {
+    const stream = StreamTest['v2'].fromChunks(['1000', '2', '3', '4', '5'], 100);
+    return streamChunk(stream, 2).then((result) => {
+      expect(stream.listeners('error')).to.have.length(0);
+      return streamChunk(stream, 1);
+    }).then((result) => {
+      expect(stream.listeners('error')).to.have.length(0);
+    });
+  });
+
   it('rejects a promise when there is an error on the stream', function () {
     const errorStream = StreamTest['v2'].fromErroredChunks(new Error('boom'), [], 0);
     let errored = false;
