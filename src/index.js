@@ -16,7 +16,10 @@ module.exports = function nextChunk (stream, size) {
 
     stream.once('error', onError);
     const data = stream.read(size);
-    if (data) return resolve(data);
+    if (data) {
+      stream.removeListener('error', onError);
+      return resolve(data);
+    }
     return setImmediate(() => {
       stream.removeListener('error', onError);
       resolve(nextChunk(stream, size));
