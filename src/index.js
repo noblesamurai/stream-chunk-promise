@@ -10,18 +10,14 @@
  */
 module.exports = function nextChunk (stream, size) {
   return new Promise((resolve, reject) => {
-    function onError (err) {
-      return reject(err);
-    }
-
-    stream.once('error', onError);
+    stream.once('error', reject);
     const data = stream.read(size);
     if (data) {
-      stream.removeListener('error', onError);
+      stream.removeListener('error', reject);
       return resolve(data);
     }
     return setImmediate(() => {
-      stream.removeListener('error', onError);
+      stream.removeListener('error', reject);
       resolve(nextChunk(stream, size));
     });
   });

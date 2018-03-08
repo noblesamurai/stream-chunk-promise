@@ -2,24 +2,15 @@ const expect = require('chai').expect;
 const StreamGenerator = require('stream-generator');
 const StreamTest = require('streamtest');
 
-function * simplisticByteGenerator () {
-  // spits out bytes, which correspond to ascii chars:
-  // 'M','a','r','s','h','a','l','l'
-  yield 77;
-  yield 97;
-  yield 114;
-  yield 115;
-  yield 104;
-  yield 97;
-  yield 108;
-  yield 108;
+function * byteGenerator (string) {
+  for (var c of string) yield c.charCodeAt();
 }
 
 const streamChunk = require('..');
 
 describe('stream-chunk-promise', function () {
   it('resolves a promise when there is enough data, flushes at end', function () {
-    const byteStream = StreamGenerator(simplisticByteGenerator);
+    const byteStream = StreamGenerator(byteGenerator.bind(null, 'Marshall'));
     return streamChunk(byteStream, 2).then((result) => {
       expect(result.toString()).to.equal('Ma');
       return streamChunk(byteStream, 3);

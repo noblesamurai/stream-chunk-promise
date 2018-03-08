@@ -5,8 +5,6 @@
 ## Usage
 
 ```js
-// Several examples of usage.
-// Usually copying and pasting code from the tests and making the code standalone suffices.
 const nextChunk = require('stream-chunk-promise');
 const stream = someReadableStream();
 const size = 10;
