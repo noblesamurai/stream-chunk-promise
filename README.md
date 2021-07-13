@@ -2,6 +2,18 @@
 
 > Get a promise that resolves when we can read(size) next chunk of stream.
 
+## Prerequisites
+
+```
+$ pip install pre-commit
+```
+
+## Installation
+
+```
+$ pre-commit install --install-hooks
+```
+
 ## Usage
 
 ```js
